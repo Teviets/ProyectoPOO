@@ -16,8 +16,8 @@ import java.awt.event.ActionListener;
  * navegar por el programa. Pertenece a la vista del movelo MVC
  * 
  * @author Sebastian Estrada Tuch
- * @since 3/10/2021
- * @version 0.2
+ * @since 15/10/2021
+ * @version 0.21
  */
 class GUI extends JFrame implements ActionListener{
     
@@ -26,6 +26,9 @@ class GUI extends JFrame implements ActionListener{
 
     private Controlador controladorcito = new Controlador(); // Se instancia un nuevo controlador
     
+    private JFrame perfil;
+    private JFrame registroF;
+
     private JButton inicioSesion;// Es el boton de inicion de sesion
     private JButton registro; // Boton de registro
     private JButton busquedaTrabajo; // Boton de busqueda de trabajo
@@ -206,8 +209,6 @@ class GUI extends JFrame implements ActionListener{
         paraBusqueda.setBounds(0,166,420,100);
         
 
-        
-        
         perfil.setTitle("JobGuider");
         perfil.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         perfil.getContentPane().setBackground(new Color(0x123456));
@@ -297,7 +298,7 @@ class GUI extends JFrame implements ActionListener{
      * Este metodo despliega las opciones de registro para una empresa y para un buscador
      */
     public void registro(){
-        JFrame registro = new JFrame();
+        registroF = new JFrame();
         
         JPanel textos = new JPanel();
 
@@ -453,6 +454,8 @@ class GUI extends JFrame implements ActionListener{
         }else if(e.getSource() == registro){
             this.dispose();
             registro();
+        }else if(e.getSource() == busquedaTrabajo){
+            System.out.println("Estas buscando trabajo");
         }
     }
 }
