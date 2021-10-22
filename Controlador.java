@@ -2,8 +2,8 @@
  * Esta clase es el controlador de todo el programa, inicializa app y gui los relaciona tanto de ida y vuelta
  * 
  * @author Sebastian Estrada Tuch
- * @since 15/10/2021
- * @version 0.11
+ * @since 22/10/2021
+ * @version 0.2
  */
 class Controlador{
     private App jobGuider;// Esta variable nos permite generar la app
@@ -30,18 +30,13 @@ class Controlador{
      * @return retorna un boolean
      */
     public boolean verificador (String us, String contra, boolean corrector){
-        for (int i = 0; i<jobGuider.candidatos.size(); i++){
-            if ((jobGuider.candidatos.get(i).getContra().equals(contra) == true) && (jobGuider.candidatos.get(i).getUsuario().equals(us) == true)){
+        for (int i = 0; i<jobGuider.getCandidatos().size(); i++){
+            if ((jobGuider.getCandidatos().get(i).getContra().equals(contra) == true) && (jobGuider.getCandidatos().get(i).getUsuario().equals(us) == true)){
                 corrector = true;
             }
         }
-        for (int i = 0; i<jobGuider.empleados.size(); i++){
-            if ((jobGuider.empleados.get(i).getContra().equals(contra) == true) && (jobGuider.empleados.get(i).getUsuario().equals(us) == true)){
-                corrector = true;
-            }
-        }
-        for (int i = 0; i<jobGuider.empresas.size(); i++){
-            if ((jobGuider.empresas.get(i).getUsuario().equals(us) == true) && (jobGuider.empresas.get(i).getContra().equals(contra) == true)){
+        for (int i = 0; i<jobGuider.getEmpresas().size(); i++){
+            if ((jobGuider.getEmpresas().get(i).getUsuario().equals(us) == true) && (jobGuider.getEmpresas().get(i).getContra().equals(contra) == true)){
                 corrector = true;
             }
         }
@@ -54,26 +49,77 @@ class Controlador{
      * @param indice
      * @return retorna un int
      */
-    public int verificador1 (String us, String contra, int indice){
-        for (int i = 0; i<jobGuider.candidatos.size(); i++){
-            if ((jobGuider.candidatos.get(i).getContra().equals(contra) == true) && (jobGuider.candidatos.get(i).getUsuario().equals(us) == true)){
+    public int identificador (String us, String contra){
+        int indice = 0;
+        for (int i = 0; i<jobGuider.getCandidatos().size(); i++){
+            if ((jobGuider.getCandidatos().get(i).getContra().equals(contra) == true) && (jobGuider.getCandidatos().get(i).getUsuario().equals(us) == true)){
                 indice = i;
                 break;
             }
         }
-        for (int i = 0; i<jobGuider.empleados.size(); i++){
-            if ((jobGuider.empleados.get(i).getContra().equals(contra) == true) && (jobGuider.empleados.get(i).getUsuario().equals(us) == true)){
-                indice = i;
-                break;
-            }
-        }
-        for (int i = 0; i<jobGuider.empresas.size(); i++){
-            if ((jobGuider.empresas.get(i).getUsuario().equals(us) == true) && (jobGuider.empresas.get(i).getContra().equals(contra) == true)){
+        for (int i = 0; i<jobGuider.getEmpresas().size(); i++){
+            if ((jobGuider.getEmpresas().get(i).getUsuario().equals(us) == true) && (jobGuider.getEmpresas().get(i).getContra().equals(contra) == true)){
                 indice = i;
                 break;
             }
         }
         return indice;
+    }
+
+    /**
+     * Este verificador revisa de quien es el usuario y contraseña y si estos pertenecen a candidatos o si pertenecen a empresas
+     * @return retorna un Boolean
+     */
+    public boolean verificador2(String us, String contra){
+        boolean x = false;
+        for (int i = 0; i<jobGuider.getCandidatos().size(); i++){
+            if ((jobGuider.getCandidatos().get(i).getContra().equals(contra) == true) && (jobGuider.getCandidatos().get(i).getUsuario().equals(us) == true)){
+                x = false;
+            }
+        }
+        for (int i = 0; i<jobGuider.getEmpresas().size(); i++){
+            if ((jobGuider.getEmpresas().get(i).getUsuario().equals(us) == true) && (jobGuider.getEmpresas().get(i).getContra().equals(contra) == true)){
+                x = true;
+            }
+        }
+        return x;
+    }
+
+    /**
+     * 
+     * Este metodo permite crear un nuevo Buscador
+     * @param us
+     * @param contra
+     * @param nom
+     * @param cel
+     * @param direc
+     * @param ed
+     * @param idioma0
+     * @param profe
+     * @param tit
+     * @param cor
+     */
+    public void nuevoBuscador(String us, String contra, String nom, String cel, String direc, int ed, String idioma0, String profe, String tit, String cor){
+        jobGuider.nuevoBuscador(us, contra, nom, cel, direc, ed, idioma0, profe, tit, cor);
+    }
+    /**
+     * Este metodo crea una nueva empresa
+     * @param us
+     * @param contr
+     * @param name
+     * @param objeto
+     * @param corr
+     * @param num
+     */
+    public void nuevaEmpresa(String us, String contr,String name,String objeto, String corr, String num){
+        jobGuider.nuevaEmp(us, contr, name, objeto, corr, num);
+    }
+    /**
+     * Este metodo reinicia la GUI
+     */
+    public void reinicioDeGui(){
+        
+        interfaz.reinicio();
     }
     /**
      * Este metodo es un getter de App
