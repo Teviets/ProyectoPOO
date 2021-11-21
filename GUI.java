@@ -9,6 +9,8 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.io.IOException;
 
 
 /**
@@ -26,11 +28,20 @@ class GUI extends JFrame implements ActionListener{
 
     private Controlador controladorcito = new Controlador(); // Se instancia un nuevo controlador
     
-    private JFrame perfil;
-    private JFrame preRegis;
-    private JFrame registroF;
-    private JFrame aplicaATr;
+    private JFrame perfil;// Guarda el frame en donde se muestra el perfil ya se a de empresa o de buscador
+    private JFrame preRegis;// Guarda el frame en donde se pregunta como que desea registrarse
+    private JFrame registroF; // Guarda el frame en donde se llena el formulario de registro
+    private JFrame aplicaATr; // Guarda el frame en donde un buscador aplica a un trabajo
+    private JFrame crearNP; // Guarda el frame en donde se llena el formulario de un puesto
+    private JFrame puestosDeEmpresas; // en este frame se mostraran los resumenes de los puestos de una empresa
+    private JFrame perfilPues; // En este freame se podra seleccionar a un usuario para ocupar un puesto
 
+    private ArrayList<JButton> botones = new ArrayList<JButton>(); // Guarda todos los botones para aplicar a un trabajo
+    private ArrayList<JButton> botonesPaEmp = new ArrayList<JButton>();// Guarda los botones para ver los perfiles de los puestos de cada empresa
+    private ArrayList<JLabel> labels = new ArrayList<JLabel>();// guarda todos los label para aplicar a un trabajo
+    private ArrayList<String> empresas = new ArrayList<String>();
+    private ArrayList<String> puestosDeEmp = new ArrayList<String>();
+    private ArrayList<JLabel> candidatos = new ArrayList<JLabel>();
     private JButton inicioSesion;// Es el boton de inicion de sesion
     private JButton registro; // Boton de registro
     private JButton busquedaTrabajo; // Boton de busqueda de trabajo
@@ -40,6 +51,7 @@ class GUI extends JFrame implements ActionListener{
     private JButton paraRegistro1;
     private JButton nuevoPuesto;
     private JButton estadoPuesto;
+    private JButton crearPuesto;
 
     // JTextFields buscador
     private JTextField usuario; // txt Box de usuario
@@ -61,12 +73,20 @@ class GUI extends JFrame implements ActionListener{
     private JTextField nombreE;
     private JTextField celularcito;
     private JTextField objetito;// txt box para registro
+
+    // JTextFields de puesto
+    private JTextField npNombre;
+    private JTextField npDescri;
+    private JTextField npTitulo;
+    private JTextField npEdadMin;
+    private JTextField npEdadMax;
+    private JTextField npTEXP;
+
+    // Seleccion de candidato para puesto
+    private JTextField indiceCandidato;
+    private JButton seleccionar;
     
-    
-    
-    
-    
-    
+
     /**
      * Esta clase muestra la ventana principal del programa
      */
@@ -89,6 +109,9 @@ class GUI extends JFrame implements ActionListener{
         this.add(txtFields);
 
     }
+    /**
+     * Este metodo reinicia la aplicacion
+     */
     public void reinicio(){
         JPanel soloLabels = losLabelPrincipal();
         JPanel botones = paraBotonesPrincipal();
@@ -240,10 +263,12 @@ class GUI extends JFrame implements ActionListener{
         estadoPuesto.setText("Ver el estado de tus puestos");
         estadoPuesto.addActionListener(this);
         estadoPuesto.setBounds(115,0,200,30);
-        /*nuevoPuesto = new JButton();
+        nuevoPuesto = new JButton();
         nuevoPuesto.addActionListener(this);
-        nuevoPuesto*/
+        nuevoPuesto.setText("Crear un nuevo Puesto");
+        nuevoPuesto.setBounds(115,40,200,30);
         paraBusqueda.add(estadoPuesto);
+        paraBusqueda.add(nuevoPuesto);
         paraBusqueda.setBackground(new Color(0x123456));
         paraBusqueda.setLayout(null);
         paraBusqueda.setBounds(0,166,420,100);
@@ -253,7 +278,7 @@ class GUI extends JFrame implements ActionListener{
         perfil.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         perfil.getContentPane().setBackground(new Color(0x123456));
         perfil.setResizable(false);
-        perfil.setSize(420,250);
+        perfil.setSize(420,300);
         perfil.setVisible(true);
         perfil.setLayout(null);
         perfil.add(txtInfoGen);
@@ -606,54 +631,279 @@ class GUI extends JFrame implements ActionListener{
         perfil.dispose();
         aplicaATr = new JFrame();
 
-        JPanel txt = new JPanel();
+        crearInfoPuesXpuesto();
 
-        JLabel trabajo1 = new JLabel("Integral puesto de oficinista");
-        trabajo1.setBounds(0,0,180,25);
-        trabajo1.setForeground(Color.white);
-        JLabel trabajo2 = new JLabel("SETEC puesto de tecnico");
-        trabajo2.setBounds(0,35,180,25);
-        trabajo2.setForeground(Color.white);
-        JLabel trabajo3 = new JLabel("HP puesto de vendedor");
-        trabajo3.setBounds(0,65,180,25);
-        trabajo3.setForeground(Color.white);
+        JPanel todaLaInfo = new JPanel();
+        int y = 0;
+        for (int i = 0; i<labels.size(); i++){
+            labels.get(i).setBounds(0,y,200,50);
+            todaLaInfo.add(labels.get(i));
+            y += 60;
+        }
+        int y2 = 10;
+        for (int i = 0; i<botones.size(); i++){
+            botones.get(i).setBounds(210,y,100,30);
+            todaLaInfo.add(botones.get(i));
+            y2 += 60;
+        }
 
-        txt.setLayout(null);
-        txt.setBackground(new Color(0x123456));
-        txt.setBounds(0,0,165,100);
-        txt.add(trabajo1);
-        txt.add(trabajo2);
-        txt.add(trabajo3);
-
-        JPanel botones = new JPanel();
-
-        JButton momentum1 = new JButton();
-        momentum1.setText("Mas informacion");
-        momentum1.setBounds(0,0,140,20);
-        JButton momentum2 = new JButton();
-        momentum2.setText("Mas informacion");
-        momentum2.setBounds(0,35,140,20);
-        JButton momentum3 = new JButton();
-        momentum3.setText("Mas informacion");
-        momentum3.setBounds(0,65,140,20);
-
-        botones.setLayout(null);
-        botones.setBackground(new Color(0x123456));
-        botones.setBounds(180,0,200,100);
-        botones.add(momentum1);
-        botones.add(momentum2);
-        botones.add(momentum3);
+        todaLaInfo.setBounds(0,0,500,500);
+        todaLaInfo.setBackground(new Color(0x123456));
 
         aplicaATr.setVisible(true);
-        aplicaATr.setSize(420, 500);
+        aplicaATr.setSize(500, 500);
         aplicaATr.setTitle("JobGuider");
         aplicaATr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         aplicaATr.getContentPane().setBackground(new Color(0x123456));
-        aplicaATr.setResizable(false);
-        aplicaATr.setLayout(null);
-        aplicaATr.add(botones);
-        aplicaATr.add(txt);
+        aplicaATr.setResizable(true);
+        aplicaATr.add(todaLaInfo);
+        //aplicaATr.setLayout(null);
+        
     }
+
+    /**
+     * Sirver para crear el formulario de creacion de puesto
+     */
+    public void paraNuevoPuesto(){
+        perfil.dispose();
+        crearNP = new JFrame();
+
+        JPanel txtField = new JPanel();// JPanel de txtField
+        npNombre = new JTextField();
+        npNombre.setBounds(0,0,200,25);
+        npDescri = new JTextField();
+        npDescri.setBounds(0,30,200,25);
+        npTitulo = new JTextField();
+        npTitulo.setBounds(0,60,200,25);
+        npEdadMin = new JTextField();
+        npEdadMin.setBounds(0,90,200,25);
+        npEdadMax = new JTextField();
+        npEdadMax.setBounds(0,120,200,25);
+        npTEXP = new JTextField();
+        npTEXP.setBounds(0,150,200,25);
+
+        txtField.setLayout(null);
+        txtField.setBounds(250,0,230,180);
+        txtField.setBackground(new Color(0x123456));
+        txtField.add(npNombre);
+        txtField.add(npTitulo);
+        txtField.add(npDescri);
+        txtField.add(npEdadMin);
+        txtField.add(npEdadMax);
+        txtField.add(npTEXP);
+
+        JPanel txt = new JPanel();// JPanel de labels
+        //label de txt
+        JLabel nPuesto = new JLabel("Nombre del puesto nuevo: ");
+        nPuesto.setBounds(50,0,200,25);
+        nPuesto.setForeground(Color.WHITE);
+        JLabel nPDescripcion = new JLabel("Descripcion del puesto: ");
+        nPDescripcion.setBounds(50,30,200,25);
+        nPDescripcion.setForeground(Color.WHITE);
+        JLabel nPTitulo = new JLabel("Titulo requerido: ");
+        nPTitulo.setBounds(50,60,200,25);
+        nPTitulo.setForeground(Color.WHITE);
+        JLabel nPEdadMin = new JLabel("Edad minima: ");
+        nPEdadMin.setBounds(50,90,200,25);
+        nPEdadMin.setForeground(Color.WHITE);
+        JLabel nPEdadMax = new JLabel("Edad maxima: ");
+        nPEdadMax.setBounds(50,120,200,25);
+        nPEdadMax.setForeground(Color.WHITE);
+        JLabel nPtExp = new JLabel("Tiempo de experiencia(Meses/12): ");
+        nPtExp.setBounds(50,150,200,25);
+        nPtExp.setForeground(Color.WHITE);
+
+        txt.setLayout(null);
+        txt.setBackground(new Color(0x123456));
+        txt.setBounds(0,0,250,180);
+        txt.add(nPuesto);
+        txt.add(nPDescripcion);
+        txt.add(nPTitulo);
+        txt.add(nPEdadMin);
+        txt.add(nPEdadMax);
+        txt.add(nPtExp);
+
+        JPanel botoncitos = new JPanel();// JPanel de Button
+        crearPuesto = new JButton();
+        crearPuesto.setText("Crear");
+        crearPuesto.addActionListener(this);
+        
+        botoncitos.setBackground(new Color(0x123456));
+        botoncitos.setBounds(0, 200, 420,100);
+        botoncitos.add(crearPuesto);
+
+
+        
+        crearNP.setVisible(true);
+        crearNP.setSize(420, 500);
+        crearNP.setTitle("JobGuider");
+        crearNP.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        crearNP.getContentPane().setBackground(new Color(0x123456));
+        crearNP.setResizable(false);
+        crearNP.setLayout(null);
+        crearNP.add(botoncitos);
+        crearNP.add(txt);
+        crearNP.add(txtField);
+    }
+    public void creacionP(){
+        String nombrePues = npNombre.getText();
+        String descripPues = npDescri.getText();
+        String titPues = npTitulo.getText();
+        int edadMin = Integer.parseInt(npEdadMin.getText());
+        int edadMax = Integer.parseInt(npEdadMax.getText());
+        int tExp = Integer.parseInt(npTEXP.getText());
+
+        controladorcito.nuevaPuesto(nombrePues, descripPues, titPues, edadMin, edadMax, tExp);
+
+    }
+    /**
+     * Este metodo pide al usuario que reinicie la aplicacion
+     */
+    public void reiniciaLaApp(){
+        JFrame mensajito = new JFrame();
+
+        mensajito.setVisible(true);
+        mensajito.setTitle("IMPORTANTE");
+        mensajito.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JLabel importante = new JLabel("<html><p>Porfavor reinicia la APP para ver los cambios realizados</html>");
+        mensajito.add(importante);
+        mensajito.setSize(300,300);
+    }
+    /**
+     * Este metodo permite crear tantos botones y labels como puestos hay
+     */
+    private void crearInfoPuesXpuesto(){
+        for (int i = 0; i<controladorcito.getApp().getEmpresas().size(); i++){
+            for (int j = 0; j<controladorcito.getApp().getEmpresas().get(i).getPuestos().size(); j++){
+                JButton momentaneo = new JButton();
+                momentaneo.setText("Aplicar");
+                momentaneo.addActionListener(this);
+                botones.add(momentaneo);
+                JLabel momentaneo1 = new JLabel("<html>Empresa: "+controladorcito.getApp().getEmpresas().get(i).getNombre()+"<p>"+controladorcito.getApp().getEmpresas().get(i).getPuestos().get(j)+"</html>");
+                momentaneo1.setForeground(Color.WHITE);
+                labels.add(momentaneo1);
+                empresas.add(controladorcito.getApp().getEmpresas().get(i).getNombre());
+                puestosDeEmp.add(controladorcito.getApp().getEmpresas().get(i).getPuestos().get(j).getPuesto());
+            }
+        }
+    }
+    /**
+     * Este metodo nos permite asignar a el buscador que ha iniciado sesion a una candidatura para un puesto 
+     * @param i
+     */
+    private void aplicacionDePuesto(int i){
+        for (int emp = 0; emp<controladorcito.getApp().getEmpresas().size(); emp++){
+            if ((controladorcito.getApp().getEmpresas().get(emp).getNombre().equals(empresas.get(i))) == true){
+                for(int p = 0; p<controladorcito.getApp().getEmpresas().get(emp).getPuestos().size(); p++){
+                    if ((controladorcito.getApp().getEmpresas().get(emp).getPuestos().get(p).getPuesto().equals(puestosDeEmp.get(i))) == true){
+                        controladorcito.getApp().getEmpresas().get(emp).getPuestos().get(p).agregarCandidato(controladorcito.getApp().getCandidatos().get(indic));
+                    }  
+                }
+            }
+        }
+    }
+    /**
+     * Este metodo crea nuevos botones que mostraran el perfil de un puesto
+     */
+    private void establecimientoDeBttPEMP(){
+        for (int i = 0; i<botones.size(); i++){
+            botonesPaEmp.add(botones.get(i));
+        }
+        for (int i = 0; i<botonesPaEmp.size(); i++){
+            botonesPaEmp.get(i).setText("Mas info.");
+        }
+    }
+    /**
+     * Este metodo muestra resumen de los puestos
+     */
+    private void todosLosPuestos(){
+        perfil.dispose();
+        aplicaATr = new JFrame();
+
+        crearInfoPuesXpuesto();
+        establecimientoDeBttPEMP();
+
+        JPanel todaLaInfo = new JPanel();
+        int y = 0;
+        for (int i = 0; i<empresas.size(); i++){
+            if ((controladorcito.getApp().getEmpresas().get(indic).getNombre().equals(empresas.get(i))) == true){
+                for (int j = 0; j<labels.size(); j++){
+                    labels.get(i).setBounds(0,y,200,50);
+                    todaLaInfo.add(labels.get(i));
+                    y += 60;
+                }
+            }
+        }
+        int y2 = 10;
+        for (int i = 0; i<empresas.size(); i++){
+            if ((controladorcito.getApp().getEmpresas().get(indic).getNombre().equals(empresas.get(i))) == true){
+                for (int j = 0; j<botones.size(); j++){
+                    botones.get(i).setBounds(210,y,100,30);
+                    todaLaInfo.add(botones.get(i));
+                    y2 += 60;
+                }
+            }else{
+                JLabel mensaje = new JLabel("No hay puestos disponibles");
+                mensaje.setForeground(Color.white);
+                mensaje.setBounds(100,100,200,25);
+                todaLaInfo.add(mensaje);
+            }
+        }
+        
+        todaLaInfo.setBounds(0,0,500,500);
+        todaLaInfo.setBackground(new Color(0x123456));
+
+        aplicaATr.setVisible(true);
+        aplicaATr.setSize(500, 500);
+        aplicaATr.setTitle("JobGuider");
+        aplicaATr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        aplicaATr.getContentPane().setBackground(new Color(0x123456));
+        aplicaATr.setResizable(true);
+        aplicaATr.add(todaLaInfo);
+    }
+    private void nuevosLabels(int i){
+        for (int j = 0; j<controladorcito.getApp().getEmpresas().get(indic).getPuestos().get(i).getCandidatos().size(); j++){
+            JLabel momento = new JLabel("<html>"+j +".- "+ controladorcito.getApp().getEmpresas().get(indic).getPuestos().get(i).getCandidatos().get(j)+"<html>");
+            momento.setForeground(Color.black);
+            candidatos.add(momento);
+        }
+    }
+    private void perfilPues(){
+        aplicaATr.dispose();
+        perfilPues = new JFrame();
+        JPanel paraCandidatos = new JPanel();
+        int y = 0;
+        if ( candidatos.get(0) != null){
+            for (int i = 0; i<candidatos.size(); i++){
+                candidatos.get(i).setBounds(0,y,300,25);
+                paraCandidatos.add(candidatos.get(i));
+                y += 30;
+            }
+        }
+        JLabel indicacion = new JLabel("Indique el indice del candidato");
+        indicacion.setBounds(0,y,200,25);
+        paraCandidatos.add(indicacion);
+        indiceCandidato = new JTextField();
+        indiceCandidato.setBounds(200,y,50,25);
+        paraCandidatos.add(indiceCandidato);
+        seleccionar = new JButton();
+        seleccionar.setText("Contratar");
+        seleccionar.setBounds(255,y,100,30);
+        seleccionar.addActionListener(this);
+        paraCandidatos.add(seleccionar);
+
+        paraCandidatos.setLayout(null);
+
+
+        perfilPues.setVisible(true);
+        perfilPues.setSize(500, 500);
+        perfilPues.setTitle("JobGuider");
+        perfilPues.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        perfilPues.getContentPane().setBackground(new Color(0x123456));
+        perfilPues.setResizable(true);
+        perfilPues.add(paraCandidatos);
+    }
+
     
     /**
      * Este metodo es el que permite que los botones puedan generar acciones
@@ -675,6 +925,8 @@ class GUI extends JFrame implements ActionListener{
                     IniciarSesionEmp(indic,controladorcito);
                 }
                 
+            }else{
+                System.out.println("No te lee");
             }
         }else if(e.getSource() == registro){
             this.dispose();
@@ -684,15 +936,43 @@ class GUI extends JFrame implements ActionListener{
 
         }else if(e.getSource() == preRegistroBusc){
             nuevoBuscador();
+            
         }else if(e.getSource() == paraRegistro){
             registroF.dispose();
-            controladorcito.reinicioDeGui();
+            controladorcito.escritura();
+            controladorcito = new Controlador();
         }else if(e.getSource() == paraRegistro1){
             reNuevoBus();
             registroF.dispose();
-            controladorcito.reinicioDeGui();
+            controladorcito.escritura();
+            controladorcito = new Controlador();
         }else if(e.getSource() == busquedaTrabajo){
             aplicaraTrabajo();
+        }else if (e.getSource() == nuevoPuesto){
+            paraNuevoPuesto();
+        }else if (e.getSource() == crearPuesto){
+            creacionP();
+            controladorcito.escritura();
+            reiniciaLaApp();
         }
+        for (int i = 0; i<botones.size(); i++){
+            if (e.getSource() == botones.get(i)){
+                aplicacionDePuesto(i);
+                controladorcito.escritura();
+            }
+        }
+        for (int i = 0; i<botonesPaEmp.size(); i++){
+            if (e.getSource() == botonesPaEmp.get(i)){
+                nuevosLabels(i);
+                perfilPues();
+            }
+        }
+        if (e.getSource() == estadoPuesto){
+            todosLosPuestos();
+        }
+        /*
+        else if (e.getSource() == botones){
+            System.out.println("Si funciona");
+        }*/
     }
 }

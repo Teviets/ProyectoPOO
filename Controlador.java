@@ -1,3 +1,4 @@
+import java.io.*;
 /**
  * Esta clase es el controlador de todo el programa, inicializa app y gui los relaciona tanto de ida y vuelta
  * 
@@ -6,8 +7,9 @@
  * @version 0.2
  */
 class Controlador{
-    private App jobGuider;// Esta variable nos permite generar la app
+    private App jobGuider = null;// Esta variable nos permite generar la app
     private static GUI interfaz; // En esta variable se generara la interfaz grafica
+    private int indice;
     /**
      * Este es el metodo main el cual es el que ejecutara todo el programa
      * @param args
@@ -19,8 +21,38 @@ class Controlador{
      * Este es el metodo constructor e inicializa jobGuider
      */
     public Controlador(){
-        jobGuider = new App();
-        
+        this.lectura();
+        if(jobGuider == null){
+            jobGuider = new App();
+        }
+    }
+    /**
+     * Este metodo permite leer un txt que guarda el objeto APP de jobGuider
+     */
+    private void lectura(){
+        try {
+            
+            ObjectInputStream lectura = new ObjectInputStream(new FileInputStream("jobGuider.txt"));
+            jobGuider = (App)lectura.readObject();
+        } catch (FileNotFoundException e) {
+            System.out.println("No existe el archivo");
+        } catch (IOException e){
+            System.out.println(e.getMessage());
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+    /**
+     * Este metodo permite la sobre escritura de txt que guarda el objeto APP jobguider
+     */
+    public void escritura(){
+        try {
+            ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("jobGuider.txt"));
+            os.writeObject(jobGuider);
+            os.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
     /**
      * Este metodo es el verificador de si se coloco la misma contraseña y usuario que lo que existe en jobGuider 
@@ -50,7 +82,7 @@ class Controlador{
      * @return retorna un int
      */
     public int identificador (String us, String contra){
-        int indice = 0;
+        indice = 0;
         for (int i = 0; i<jobGuider.getCandidatos().size(); i++){
             if ((jobGuider.getCandidatos().get(i).getContra().equals(contra) == true) && (jobGuider.getCandidatos().get(i).getUsuario().equals(us) == true)){
                 indice = i;
@@ -113,6 +145,19 @@ class Controlador{
      */
     public void nuevaEmpresa(String us, String contr,String name,String objeto, String corr, String num){
         jobGuider.nuevaEmp(us, contr, name, objeto, corr, num);
+    }
+    /**
+     * Este metodo crea una nueva 
+     * @param i
+     * @param pues
+     * @param descrip
+     * @param tit
+     * @param edMin
+     * @param edMax
+     * @param anosEx
+     */
+    public void nuevaPuesto(String pues, String descrip, String tit, int edMin, int edMax, int anosEx){
+        jobGuider.getEmpresas().get(indice).nuevoPuesto(pues, descrip, tit, edMin, edMax, anosEx);
     }
     /**
      * Este metodo reinicia la GUI

@@ -1,17 +1,17 @@
+import java.io.Serializable;
 import java.util.ArrayList;
+//import java.io.Serializable;
 
 /**
  * Esta Clase pretende retornar la informacion importante que un usuario buscador o empleado puede tener
  * 
- * @author Sergio Alejandro Cardoza 
+ * @author 
  * @since 3/10/2021
  * @version 0.2
  */
 
-class Buscador{
+class Buscador extends Usuario implements Serializable{
     // Informacion Importante
-    private String usuario;// Guarda el usuario del buscador
-    private String contasena; // Guarda la contraseña del buscador
     private String nombreCompleto; // Guarda el nombre completo
     private String celular; // Guarda el numero de telefono que tiene el buscador
     private int edad; // Guarda la edad del buscador
@@ -41,12 +41,12 @@ class Buscador{
      * @param idioma0
      * @param profe
      * @param tit
+     * @param cor
      */
-    public Buscador(String us, String contra, String nom, String cel, String direc, int ed, String idioma0, String profe, String tit){
+    public Buscador(String us, String contra, String nom, String cel,String direc, int ed, String idioma0, String profe, String tit, String cor,boolean contrat){
+        super(cor, us, contra);
         idiomas = new ArrayList<String>();
         titulos = new ArrayList<String>();
-        usuario = us;
-        contasena = contra;
         nombreCompleto = nom;
         celular = cel;
         direccion = direc;
@@ -55,7 +55,13 @@ class Buscador{
         profesion = profe;
         gradoEscolarMax = tit;
         titulos.add(tit);
-        contratado = false;
+        contratado = contrat;
+    }
+    /**
+     * Metodo overrideado de toString
+     */
+    public String toString(){
+        return nombreCompleto+" "+edad+" "+titulos.get(0);
     }
     /**
      * En este metodo se setean los posibles idiomas que puede tener el buscador
@@ -152,22 +158,8 @@ class Buscador{
      * Es un metodo getter de los años de experiencia previa del buscador                                 extra
      * @return retorna un int
      */
-    public int getAnosExp (){
+    public int getAnosExp(){
         return anosExp;
-    }
-    /**
-     * Este metodo es un getter del usuario del buscador
-     * @return Retorna un String
-     */
-    public String getUsuario(){
-        return usuario;
-    }
-    /**
-     * Este emetodo es un getter de la contraseña del buscador
-     * @return retorna un String
-     */
-    public String getContra(){
-        return contasena;
     }
     /**
      * Este metodo es un getter de si esta o no contratado el usuario
